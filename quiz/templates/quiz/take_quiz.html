@@ -1,0 +1,58 @@
+{% extends "quiz/base.html" %}
+
+{% block content %}
+<div class="max-w-2xl min-h-screen mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+    <div class="flex justify-between items-center mb-6">
+        <div class="text-sm text-gray-600">
+            Question {{ current_question_num }} of {{ total_questions }}
+        </div>
+        <div class="text-sm font-semibold text-blue-600">
+            Score: {{ attempt.score }}/{{ total_questions }}
+        </div>
+    </div>
+    
+    <div class="mb-4 h-2 bg-gray-200 rounded-full">
+        <div class="h-2 bg-blue-600 rounded-full" 
+             style="width: {% widthratio current_question_num total_questions 100 %} "></div>
+    </div>
+    
+    <h3 class="text-xl font-semibold text-gray-800 mb-6">{{ question.text }}</h3>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="space-y-3 mb-6">
+            {% for answer in answers %}
+            <div class="flex items-center">
+                <input type="radio" name="answer" id="answer{{ answer.id }}" 
+                       value="{{ answer.id }}" class="hidden peer">
+                <label for="answer{{ answer.id }}" 
+                       class="w-full p-3 border border-gray-300 rounded-lg cursor-pointer 
+                              peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50">
+                    {{ answer.text }}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="flex justify-between">
+            {% if current_question_num > 1 %}
+            <a href="{% url 'quiz:take_quiz' current_question_num|add:'-1' %}" 
+               class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+            </a>
+            {% else %}
+            <div></div>
+            {% endif %}
+            
+            <button type="submit" 
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                {% if current_question_num == total_questions %}
+                Submit Quiz
+                {% else %}
+                Next <i class="fas fa-arrow-right ml-2"></i>
+                {% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

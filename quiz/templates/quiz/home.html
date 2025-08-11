@@ -1,0 +1,22 @@
+{% extends "quiz/base.html" %}
+
+{% block content %}
+<div class="max-w-4xl min-h-screen mx-auto">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-blue-700 mb-4">Welcome to QuizMaster!</h2>
+        <p class="text-lg text-gray-700">Test your knowledge with our fun quizzes</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {% for category in categories %}
+        <a href="{% url 'quiz:quiz_list' %}?category={{ category.name }}"
+            class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+            <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                <i class="fas fa-question-circle text-blue-600 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-center text-gray-800">{{ category.name }}</h3>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
